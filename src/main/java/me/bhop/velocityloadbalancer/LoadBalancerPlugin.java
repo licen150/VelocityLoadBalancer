@@ -49,14 +49,6 @@ public class LoadBalancerPlugin {
     }
 
     @Subscribe
-    public void onKick(KickedFromServerEvent event) {
-        if (event.kickedDuringServerConnect())
-            return;
-        Optional<RegisteredServer> opt = proxyServer.getAllServers().stream().filter(server -> server != event.getServer()).filter(lobbies::contains).min(Comparator.comparingInt(s -> s.getPlayersConnected().size()));
-        opt.ifPresent(registeredServer -> event.setResult(KickedFromServerEvent.RedirectPlayer.create(registeredServer)));
-    }
-
-    @Subscribe
     public void onJoin(ServerPreConnectEvent event) {
         if (!connectedPlayers.contains(event.getPlayer().getUniqueId())) {
             connectedPlayers.add(event.getPlayer().getUniqueId());
