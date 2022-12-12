@@ -35,5 +35,14 @@ jobs:
     - name: Upload LoadBalacner
       uses: actions/upload-artifact@v3.0.0
       with:
-        name: LimboFilter Built On ${{ matrix.java }} JDK
+        name: VelocityLoadBalancer Built On 17 JDK
         path: "build/libs/velocityloadbalancer-1.1.jar"
+    - name: Release the build
+      if: ${{ github.event_name == 'push' }}
+      uses: ncipollo/release-action@v1.10.0
+      with:
+       artifacts: "build/libs/velocityloadbalancer-1.1.jar"
+       body: ${{ join(github.event.commits.*.message, '\n') }}
+       prerelease: true
+       name: JDK 17 Dev-build
+       tag: dev-build-jdk-17
